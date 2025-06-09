@@ -9,21 +9,10 @@ public interface EmployeeMapper {
 
     /**
      * 根据用户名查询员工
-     * @param username 用户名
-     * @return 密码、状态
+     * @param username
+     * @return
      */
-    @Select(
-            """
-            
-            SELECT
-              password,
-              status
-            FROM
-              employee
-            WHERE
-              username = #{username};
-            """
-        )
+    @Select("select * from employee where username = #{username}")
     Employee getByUsername(String username);
 
 }

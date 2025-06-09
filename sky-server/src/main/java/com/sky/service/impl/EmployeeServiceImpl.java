@@ -9,22 +9,21 @@ import com.sky.exception.AccountNotFoundException;
 import com.sky.exception.PasswordErrorException;
 import com.sky.mapper.EmployeeMapper;
 import com.sky.service.EmployeeService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
 @Service
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class EmployeeServiceImpl implements EmployeeService {
 
-    private final EmployeeMapper employeeMapper;
+    @Autowired
+    private EmployeeMapper employeeMapper;
 
     /**
      * 员工登录
      *
-     * @param employeeLoginDTO dto 包含用户名、密码
-     * @return Employee
+     * @param employeeLoginDTO
+     * @return
      */
     public Employee login(EmployeeLoginDTO employeeLoginDTO) {
         String username = employeeLoginDTO.getUsername();
@@ -41,7 +40,6 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         //密码比对
         // TODO 后期需要进行md5加密，然后再进行比对
-
         if (!password.equals(employee.getPassword())) {
             //密码错误
             throw new PasswordErrorException(MessageConstant.PASSWORD_ERROR);

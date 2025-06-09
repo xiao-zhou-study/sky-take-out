@@ -8,7 +8,6 @@ import com.sky.result.Result;
 import com.sky.service.EmployeeService;
 import com.sky.utils.JwtUtil;
 import com.sky.vo.EmployeeLoginVO;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,17 +24,18 @@ import java.util.Map;
 @RestController
 @RequestMapping("/admin/employee")
 @Slf4j
-@RequiredArgsConstructor(onConstructor_ = @__(@Autowired))
 public class EmployeeController {
 
-    private final EmployeeService employeeService;
-    private final JwtProperties jwtProperties;
+    @Autowired
+    private EmployeeService employeeService;
+    @Autowired
+    private JwtProperties jwtProperties;
 
     /**
      * 登录
      *
-     * @param employeeLoginDTO dto
-     * @return Result<EmployeeLoginVO>
+     * @param employeeLoginDTO
+     * @return
      */
     @PostMapping("/login")
     public Result<EmployeeLoginVO> login(@RequestBody EmployeeLoginDTO employeeLoginDTO) {
@@ -64,7 +64,7 @@ public class EmployeeController {
     /**
      * 退出
      *
-     * @return Result<String>
+     * @return
      */
     @PostMapping("/logout")
     public Result<String> logout() {
