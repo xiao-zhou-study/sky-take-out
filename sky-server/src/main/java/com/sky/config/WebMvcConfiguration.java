@@ -21,7 +21,7 @@ import springfox.documentation.spring.web.plugins.Docket;
  */
 @Configuration
 @Slf4j
-@RequiredArgsConstructor(onConstructor_ = {@Autowired})
+@RequiredArgsConstructor(onConstructor_ = @__(@Autowired))
 public class WebMvcConfiguration extends WebMvcConfigurationSupport {
 
     private final JwtTokenAdminInterceptor jwtTokenAdminInterceptor;
