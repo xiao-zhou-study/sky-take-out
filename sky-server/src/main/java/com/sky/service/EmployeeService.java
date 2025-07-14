@@ -1,5 +1,6 @@
 package com.sky.service;
 
+import com.sky.dto.EmployeeDTO;
 import com.sky.dto.EmployeeLoginDTO;
 import com.sky.vo.EmployeeLoginVO;
 
@@ -13,4 +14,5 @@ public interface EmployeeService {
      */
     EmployeeLoginVO login(EmployeeLoginDTO employeeLoginDTO);
 
+    void save(EmployeeDTO employeeDTO);
 }
