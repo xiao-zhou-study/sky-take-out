@@ -3,6 +3,8 @@ package com.sky.service.impl;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
+
+import com.sky.context.BaseContext;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -88,8 +90,8 @@ public class EmployeeServiceImpl implements EmployeeService {
         employee.setStatus(StatusConstant.ENABLE);
         employee.setCreateTime(LocalDateTime.now());
         employee.setUpdateTime(LocalDateTime.now());
-        employee.setCreateUser(1L);
-        employee.setUpdateUser(1L);
+        employee.setCreateUser(BaseContext.getCurrentId());
+        employee.setUpdateUser(BaseContext.getCurrentId());
         employeeMapper.insert(employee);
     }
 

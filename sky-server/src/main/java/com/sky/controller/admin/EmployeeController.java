@@ -1,5 +1,6 @@
 package com.sky.controller.admin;
 
+import org.apache.poi.ss.formula.functions.T;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -12,8 +13,6 @@ import com.sky.service.EmployeeService;
 import com.sky.vo.EmployeeLoginVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -22,13 +21,14 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 @RequestMapping("/admin/employee")
 @Slf4j
-@NoArgsConstructor
-@AllArgsConstructor
 @Api(tags = "员工相关接口")
 public class EmployeeController {
 
-    @Autowired(required = false)
-    private EmployeeService employeeService;
+    private final EmployeeService employeeService;
+
+    public EmployeeController(EmployeeService employeeService) {
+        this.employeeService = employeeService;
+    }
 
     /**
      * 登录
@@ -50,7 +50,7 @@ public class EmployeeController {
      */
     @PostMapping("/logout")
     @ApiOperation("员工退出")
-    public Result<Void> logout() {
+    public Result<T> logout() {
         return Result.success();
     }
 
@@ -62,7 +62,7 @@ public class EmployeeController {
      */
     @PostMapping
     @ApiOperation("新增员工")
-    public Result<Void> save(@RequestBody EmployeeDTO employeeDTO) {
+    public Result<T> save(@RequestBody EmployeeDTO employeeDTO) {
         employeeService.save(employeeDTO);
         return Result.success();
     }
