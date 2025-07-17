@@ -2,12 +2,16 @@ package com.sky.service.impl;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import com.sky.context.BaseContext;
+import com.sky.dto.EmployeePageQueryDTO;
+import com.sky.result.PageResult;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.sky.constant.JwtClaimsConstant;
 import com.sky.constant.MessageConstant;
@@ -24,18 +28,17 @@ import com.sky.properties.JwtProperties;
 import com.sky.service.EmployeeService;
 import com.sky.utils.JwtUtil;
 import com.sky.vo.EmployeeLoginVO;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 
 @Service
-@NoArgsConstructor
-@AllArgsConstructor
 public class EmployeeServiceImpl implements EmployeeService {
 
-    @Autowired(required = false)
-    private EmployeeMapper employeeMapper;
-    @Autowired(required = false)
-    private JwtProperties jwtProperties;
+    private final EmployeeMapper employeeMapper;
+    private final JwtProperties jwtProperties;
+
+    public EmployeeServiceImpl(EmployeeMapper employeeMapper,JwtProperties jwtProperties){
+        this.employeeMapper = employeeMapper;
+        this.jwtProperties = jwtProperties;
+    }
 
     /**
      * 员工登录
@@ -85,14 +88,43 @@ public class EmployeeServiceImpl implements EmployeeService {
      */
     public void save(EmployeeDTO employeeDTO) {
         Employee employee = new Employee();
+
         BeanUtils.copyProperties(employeeDTO, employee);
+
         employee.setPassword(BCrypt.hashpw(PasswordConstant.DEFAULT_PASSWORD, BCrypt.gensalt()));
         employee.setStatus(StatusConstant.ENABLE);
         employee.setCreateTime(LocalDateTime.now());
         employee.setUpdateTime(LocalDateTime.now());
         employee.setCreateUser(BaseContext.getCurrentId());
         employee.setUpdateUser(BaseContext.getCurrentId());
+
         employeeMapper.insert(employee);
     }
 
+    /**
+     * 分页查询
+     *
+     * @param employeePageQueryDTO 分页查询参数
+     * @return 分页结果
+     */
+    public PageResult pageQuery(EmployeePageQueryDTO employeePageQueryDTO) {
+        try(Page<Object> page = PageHelper.startPage(employeePageQueryDTO.getPage(), employeePageQueryDTO.getPageSize())){
+            List<Employee> result =  employeeMapper.pageQuery(employeePageQueryDTO);
+            return new PageResult(page.getTotal(), result);
+        }
+    }
+
+    /**
+     * 启用禁用员工账号
+     *
+     * @param status 状态
+     * @param id 员工id
+     */
+    public void startOrStop(Integer status, Long id) {
+        Employee employee = Employee.builder()
+                .id(id)
+                .status(status)
+                .build();
+        employeeMapper.update(employee);
+    }
 }
