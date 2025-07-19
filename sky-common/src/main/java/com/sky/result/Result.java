@@ -1,11 +1,12 @@
 package com.sky.result;
 
-import java.io.Serializable;
 import lombok.Data;
+
+import java.io.Serializable;
 
 /**
  * 后端统一返回结果
- * 
+ *
  * @param <T>
  */
 @Data

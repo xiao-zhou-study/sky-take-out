@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -28,9 +29,9 @@ public class JwtTokenAdminInterceptor implements HandlerInterceptor {
     /**
      * 校验jwt
      *
-     * @param request 请求
+     * @param request  请求
      * @param response 响应
-     * @param handler 处理器
+     * @param handler  处理器
      * @return 状态
      */
     public boolean preHandle(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull Object handler) {

@@ -1,17 +1,10 @@
 package com.sky.utils;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.math.BigDecimal;
-import java.math.RoundingMode; // 新增导入
-import java.security.PrivateKey;
-import java.security.Signature;
-import java.security.cert.X509Certificate;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Base64;
-import java.util.List;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.sky.properties.WeChatProperties;
+import com.wechat.pay.contrib.apache.httpclient.WechatPayHttpClientBuilder;
+import com.wechat.pay.contrib.apache.httpclient.util.PemUtil;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.http.HttpHeaders;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -23,11 +16,19 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-import com.sky.properties.WeChatProperties;
-import com.wechat.pay.contrib.apache.httpclient.WechatPayHttpClientBuilder;
-import com.wechat.pay.contrib.apache.httpclient.util.PemUtil;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.security.PrivateKey;
+import java.security.Signature;
+import java.security.cert.X509Certificate;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Base64;
+import java.util.List;
 
 /**
  * 微信支付工具类
@@ -128,10 +129,10 @@ public class WeChatPayUtil {
     /**
      * jsapi下单
      *
-     * @param orderNum 商户订单号
-     * @param total 总金额
+     * @param orderNum    商户订单号
+     * @param total       总金额
      * @param description 商品描述
-     * @param openid 微信用户的openid
+     * @param openid      微信用户的openid
      * @return
      */
     private String jsapi(String orderNum, BigDecimal total, String description, String openid)
@@ -163,10 +164,10 @@ public class WeChatPayUtil {
     /**
      * 小程序支付
      *
-     * @param orderNum 商户订单号
-     * @param total 金额，单位 元
+     * @param orderNum    商户订单号
+     * @param total       金额，单位 元
      * @param description 商品描述
-     * @param openid 微信用户的openid
+     * @param openid      微信用户的openid
      * @return
      */
     public JSONObject pay(String orderNum, BigDecimal total, String description, String openid)
@@ -216,10 +217,10 @@ public class WeChatPayUtil {
     /**
      * 申请退款
      *
-     * @param outTradeNo 商户订单号
+     * @param outTradeNo  商户订单号
      * @param outRefundNo 商户退款单号
-     * @param refund 退款金额
-     * @param total 原订单金额
+     * @param refund      退款金额
+     * @param total       原订单金额
      * @return
      */
     public String refund(String outTradeNo, String outRefundNo, BigDecimal refund, BigDecimal total)

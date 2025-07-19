@@ -1,19 +1,17 @@
 package com.sky.controller.admin;
 
-import com.sky.dto.EmployeePageQueryDTO;
-import com.sky.result.PageResult;
-import org.apache.commons.lang.ObjectUtils;
-import org.apache.poi.ss.formula.functions.T;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
 import com.sky.dto.EmployeeDTO;
 import com.sky.dto.EmployeeLoginDTO;
+import com.sky.dto.EmployeePageQueryDTO;
+import com.sky.result.PageResult;
 import com.sky.result.Result;
 import com.sky.service.EmployeeService;
 import com.sky.vo.EmployeeLoginVO;
+import com.sky.vo.EmployeeUpdateVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * 员工管理
@@ -50,7 +48,7 @@ public class EmployeeController {
      */
     @PostMapping("/logout")
     @ApiOperation("员工退出")
-    public Result<T> logout() {
+    public Result<Void> logout() {
         return Result.success();
     }
 
@@ -62,7 +60,7 @@ public class EmployeeController {
      */
     @PostMapping
     @ApiOperation("新增员工")
-    public Result<T> save(@RequestBody EmployeeDTO employeeDTO) {
+    public Result<Void> save(@RequestBody EmployeeDTO employeeDTO) {
         log.info("新增员工：{}", employeeDTO);
         employeeService.save(employeeDTO);
         return Result.success();
@@ -76,7 +74,7 @@ public class EmployeeController {
      */
     @GetMapping("/page")
     @ApiOperation("分页查询")
-    public Result<PageResult> page(EmployeePageQueryDTO employeePageQueryDTO){
+    public Result<PageResult> page(EmployeePageQueryDTO employeePageQueryDTO) {
         log.info("分页查询：{}", employeePageQueryDTO);
         PageResult pageResult = employeeService.pageQuery(employeePageQueryDTO);
         return Result.success(pageResult);
@@ -91,10 +89,37 @@ public class EmployeeController {
      */
     @PostMapping("/status/{status}")
     @ApiOperation("启用禁用员工账号")
-    public Result<?> startOrStop(@PathVariable("status") Integer status, Long id) {
+    public Result<Void> startOrStop(@PathVariable("status") Integer status, Long id) {
         log.info("员工状态：{}，员工id：{}", status, id);
         employeeService.startOrStop(status, id);
         return Result.success();
     }
+
+    /**
+     * 根据id查询员工信息
+     *
+     * @param id 员工id
+     * @return Result<EmployeeUpdateVO>
+     */
+    @GetMapping("/{id}")
+    @ApiOperation("根据id查询员工信息")
+    public Result<EmployeeUpdateVO> getById(@PathVariable("id") Long id) {
+        return Result.success(employeeService.getById(id));
+    }
+
+    /**
+     * 编辑员工信息
+     *
+     * @param employeeDTO 员工信息
+     * @return Result<Void>
+     */
+    @PutMapping
+    @ApiOperation("编辑员工信息")
+    public Result<Void> updateEmployee(@RequestBody EmployeeDTO employeeDTO) {
+        log.info("要修改的员工信息：{}", employeeDTO);
+        employeeService.update(employeeDTO);
+        return Result.success();
+    }
+
 
 }

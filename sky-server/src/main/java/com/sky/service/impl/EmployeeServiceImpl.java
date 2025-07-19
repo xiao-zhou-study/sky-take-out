@@ -1,33 +1,34 @@
 package com.sky.service.impl;
 
-import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-import com.sky.context.BaseContext;
-import com.sky.dto.EmployeePageQueryDTO;
-import com.sky.result.PageResult;
-import org.mindrot.jbcrypt.BCrypt;
-import org.springframework.beans.BeanUtils;
-import org.springframework.stereotype.Service;
 import com.sky.constant.JwtClaimsConstant;
 import com.sky.constant.MessageConstant;
 import com.sky.constant.PasswordConstant;
 import com.sky.constant.StatusConstant;
+import com.sky.context.BaseContext;
 import com.sky.dto.EmployeeDTO;
 import com.sky.dto.EmployeeLoginDTO;
+import com.sky.dto.EmployeePageQueryDTO;
 import com.sky.entity.Employee;
 import com.sky.exception.AccountLockedException;
 import com.sky.exception.AccountNotFoundException;
 import com.sky.exception.PasswordErrorException;
 import com.sky.mapper.EmployeeMapper;
 import com.sky.properties.JwtProperties;
+import com.sky.result.PageResult;
 import com.sky.service.EmployeeService;
 import com.sky.utils.JwtUtil;
 import com.sky.vo.EmployeeLoginVO;
+import com.sky.vo.EmployeeUpdateVO;
+import org.mindrot.jbcrypt.BCrypt;
+import org.springframework.beans.BeanUtils;
+import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
@@ -35,7 +36,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     private final EmployeeMapper employeeMapper;
     private final JwtProperties jwtProperties;
 
-    public EmployeeServiceImpl(EmployeeMapper employeeMapper,JwtProperties jwtProperties){
+    public EmployeeServiceImpl(EmployeeMapper employeeMapper, JwtProperties jwtProperties) {
         this.employeeMapper = employeeMapper;
         this.jwtProperties = jwtProperties;
     }
@@ -108,8 +109,8 @@ public class EmployeeServiceImpl implements EmployeeService {
      * @return 分页结果
      */
     public PageResult pageQuery(EmployeePageQueryDTO employeePageQueryDTO) {
-        try(Page<Object> page = PageHelper.startPage(employeePageQueryDTO.getPage(), employeePageQueryDTO.getPageSize())){
-            List<Employee> result =  employeeMapper.pageQuery(employeePageQueryDTO);
+        try (Page<Object> page = PageHelper.startPage(employeePageQueryDTO.getPage(), employeePageQueryDTO.getPageSize())) {
+            List<Employee> result = employeeMapper.pageQuery(employeePageQueryDTO);
             return new PageResult(page.getTotal(), result);
         }
     }
@@ -118,13 +119,40 @@ public class EmployeeServiceImpl implements EmployeeService {
      * 启用禁用员工账号
      *
      * @param status 状态
-     * @param id 员工id
+     * @param id     员工id
      */
     public void startOrStop(Integer status, Long id) {
         Employee employee = Employee.builder()
                 .id(id)
                 .status(status)
                 .build();
+        employeeMapper.update(employee);
+    }
+
+    /**
+     * 根据id查询员工信息
+     *
+     * @param id 员工id
+     * @return 员工信息
+     */
+    public EmployeeUpdateVO getById(Long id) {
+        EmployeeUpdateVO employeeUpdateVO = new EmployeeUpdateVO();
+        BeanUtils.copyProperties(employeeMapper.getById(id), employeeUpdateVO);
+        return employeeUpdateVO;
+    }
+
+    /**
+     * 编辑员工信息
+     *
+     * @param employeeDTO 员工信息
+     */
+    public void update(EmployeeDTO employeeDTO) {
+        Employee employee = new Employee();
+        BeanUtils.copyProperties(employeeDTO, employee);
+
+        employee.setUpdateTime(LocalDateTime.now());
+        employee.setUpdateUser(BaseContext.getCurrentId());
+
         employeeMapper.update(employee);
     }
 }
