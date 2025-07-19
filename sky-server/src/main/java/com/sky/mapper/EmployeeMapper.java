@@ -62,12 +62,38 @@ public interface EmployeeMapper {
             """)
     void insert(Employee employee);
 
+    /**
+     * 分页查询员工信息
+     *
+     * @param employeePageQueryDTO 分页查询参数
+     * @return 分页查询结果
+     */
     Page<Employee> pageQuery(EmployeePageQueryDTO employeePageQueryDTO);
 
+    /**
+     * 更新员工信息
+     *
+     * @param employee 员工信息
+     */
     void update(Employee employee);
 
+    /**
+     * 根据员工id查询员工信息
+     *
+     * @param id 员工id
+     * @return 员工信息
+     */
     @Select("""
-                Select id,username,name,phone,sex,id_number from employee where id = #{id}
+                SELECT
+                    id,
+                    username,
+                    name,
+                    phone,
+                    sex,id_number
+                FROM
+                    employee
+                WHERE
+                    id = #{id}
             """)
     Employee getById(Long id);
 }
