@@ -46,7 +46,8 @@ git clone [项目地址]
 2. 创建数据库并导入SQL文件
 
 ```sql
-create database sky_take_out;
+create
+database sky_take_out;
 ```
 
 3. 修改数据库配置
