@@ -96,4 +96,21 @@ public interface EmployeeMapper {
                     id = #{id}
             """)
     Employee getById(Long id);
+
+    /**
+     * 根据员工id查询员工信息
+     *
+     * @param id 员工id
+     * @return 员工信息
+     */
+    @Select("""
+                SELECT
+                    id,
+                    password
+                FROM
+                    employee
+                WHERE
+                    id = #{id}
+            """)
+    Employee getByIdPassword(Long id);
 }

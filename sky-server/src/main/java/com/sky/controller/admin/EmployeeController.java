@@ -3,6 +3,7 @@ package com.sky.controller.admin;
 import com.sky.dto.EmployeeDTO;
 import com.sky.dto.EmployeeLoginDTO;
 import com.sky.dto.EmployeePageQueryDTO;
+import com.sky.dto.PasswordEditDTO;
 import com.sky.result.PageResult;
 import com.sky.result.Result;
 import com.sky.service.EmployeeService;
@@ -118,6 +119,15 @@ public class EmployeeController {
     public Result<Void> updateEmployee(@RequestBody EmployeeDTO employeeDTO) {
         log.info("要修改的员工信息：{}", employeeDTO);
         employeeService.update(employeeDTO);
+        return Result.success();
+    }
+
+
+    @PutMapping("/editPassword")
+    @ApiOperation("修改密码")
+    public Result<Void> updatePassword(@RequestBody PasswordEditDTO passwordEditDTO){
+        log.info("修改密码信息：{}", passwordEditDTO);
+        employeeService.updatePassword(passwordEditDTO);
         return Result.success();
     }
 
