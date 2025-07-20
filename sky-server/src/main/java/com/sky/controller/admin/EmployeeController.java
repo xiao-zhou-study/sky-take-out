@@ -125,7 +125,7 @@ public class EmployeeController {
 
     @PutMapping("/editPassword")
     @ApiOperation("修改密码")
-    public Result<Void> updatePassword(@RequestBody PasswordEditDTO passwordEditDTO){
+    public Result<Void> updatePassword(@RequestBody PasswordEditDTO passwordEditDTO) {
         log.info("修改密码信息：{}", passwordEditDTO);
         employeeService.updatePassword(passwordEditDTO);
         return Result.success();

@@ -163,13 +163,13 @@ public class EmployeeServiceImpl implements EmployeeService {
      * @param passwordEditDTO 修改密码参数
      */
     public void updatePassword(PasswordEditDTO passwordEditDTO) {
-        Employee employee =  employeeMapper.getByIdPassword(BaseContext.getCurrentId());
+        Employee employee = employeeMapper.getByIdPassword(BaseContext.getCurrentId());
 
-        if(!BCrypt.checkpw(passwordEditDTO.getOldPassword(), employee.getPassword())){
+        if (!BCrypt.checkpw(passwordEditDTO.getOldPassword(), employee.getPassword())) {
             throw new PasswordErrorException(MessageConstant.OLD_PASSWORD_ERROR);
         }
 
-        if(passwordEditDTO.getOldPassword().equals(passwordEditDTO.getNewPassword())){
+        if (passwordEditDTO.getOldPassword().equals(passwordEditDTO.getNewPassword())) {
             throw new PasswordErrorException(MessageConstant.NEW_PASSWORD_EQUAL_OLD_PASSWORD);
         }
 
