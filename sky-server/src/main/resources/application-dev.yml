@@ -6,3 +6,17 @@ sky:
     database: sky_take_out
     username: root
     password: 123456
+  upload:
+    default-upload-dir: "D:/uploads"
+    default-web-url-prefix: "http://localhost:${server.port}/uploads/"
+    max-file-size: 10485760
+    allowed-extensions:
+      - jpg
+      - jpeg
+      - png
+      - gif
+      - doc
+      - docx
+      - xls
+      - xlsx
+      - pdf

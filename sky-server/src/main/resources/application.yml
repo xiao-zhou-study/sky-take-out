@@ -37,3 +37,8 @@ sky:
     admin-ttl: 2592000000
     # 设置前端传递过来的令牌名称
     admin-token-name: token
+  upload:
+    default-web-url-prefix: ${sky.upload.default-web-url-prefix}
+    max-file-size: ${sky.upload.max-file-size}
+    default-upload-dir: ${sky.upload.default-upload-dir}
+    allowed-extensions: ${sky.upload.allowed-extensions}
